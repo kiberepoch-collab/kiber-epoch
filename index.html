@@ -1,0 +1,397 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b1020">
+
+  <title>KIBER_EPOCH — Игровые компьютеры</title>
+  <meta name="description" content="Игровые компьютеры, комплектующие и сборка ПК под ваш бюджет.">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #0b1020;
+      color: #f4f6ff;
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      max-width: 1150px;
+      margin: auto;
+      padding: 0 20px;
+    }
+
+    header {
+      background: #11182b;
+      border-bottom: 1px solid #27324b;
+      padding: 18px 0;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-size: 23px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      color: #56e3c0;
+    }
+
+    nav {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    nav a:hover {
+      color: #56e3c0;
+    }
+
+    .hero {
+      padding: 90px 0;
+      background: linear-gradient(135deg, #17264b, #0b1020 65%);
+    }
+
+    .hero h1 {
+      font-size: clamp(35px, 7vw, 62px);
+      line-height: 1.1;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 span {
+      color: #56e3c0;
+    }
+
+    .hero p {
+      max-width: 580px;
+      color: #bdc7dc;
+      font-size: 18px;
+      margin-bottom: 30px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 13px 24px;
+      border-radius: 10px;
+      background: #56e3c0;
+      color: #08151b;
+      font-weight: bold;
+      transition: .2s;
+    }
+
+    .btn:hover {
+      background: #8bf5d9;
+      transform: translateY(-2px);
+    }
+
+    section {
+      padding: 65px 0;
+    }
+
+    h2 {
+      font-size: 30px;
+      margin-bottom: 14px;
+    }
+
+    .subtitle {
+      color: #aab6ce;
+      margin-bottom: 30px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: #151e32;
+      border: 1px solid #293752;
+      border-radius: 18px;
+      overflow: hidden;
+      transition: .2s;
+    }
+
+    .card:hover {
+      border-color: #56e3c0;
+      transform: translateY(-4px);
+    }
+
+    .product-image {
+      height: 190px;
+      background: linear-gradient(135deg, #243d68, #10182c);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 76px;
+    }
+
+    .card-content {
+      padding: 23px;
+    }
+
+    .card h3 {
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: #b5c0d5;
+      margin-bottom: 12px;
+    }
+
+    .price {
+      font-size: 27px;
+      font-weight: bold;
+      color: #56e3c0;
+      margin: 15px 0;
+    }
+
+    .status {
+      display: inline-block;
+      color: #facc74;
+      font-size: 13px;
+      margin-bottom: 15px;
+    }
+
+    .service {
+      padding: 25px;
+    }
+
+    .service-icon {
+      font-size: 36px;
+      margin-bottom: 12px;
+    }
+
+    .banner {
+      background: linear-gradient(135deg, #173b46, #17264b);
+      border: 1px solid #3b6670;
+      border-radius: 20px;
+      padding: 35px;
+    }
+
+    .banner p {
+      color: #c9d5e6;
+      margin-bottom: 22px;
+    }
+
+    .notice {
+      color: #aab6ce;
+      font-size: 14px;
+      margin-top: 20px;
+    }
+
+    footer {
+      border-top: 1px solid #27324b;
+      padding: 30px 0;
+      color: #aab6ce;
+      text-align: center;
+    }
+
+    @media (max-width: 600px) {
+      .hero {
+        padding: 65px 0;
+      }
+
+      nav {
+        font-size: 14px;
+        gap: 14px;
+      }
+
+      section {
+        padding: 45px 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="container nav">
+      <a class="logo" href="#">KIBER_EPOCH</a>
+
+      <nav>
+        <a href="#catalog">Каталог</a>
+        <a href="#services">Услуги</a>
+        <a href="#about">О нас</a>
+        <a href="#contacts">Контакты</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <div class="hero">
+      <div class="container">
+        <h1>
+          ТВОЙ НОВЫЙ<br>
+          <span>ИГРОВОЙ ПК</span>
+        </h1>
+
+        <p>
+          Готовые компьютеры, комплектующие и индивидуальная
+          сборка под твой бюджет.
+        </p>
+
+        <a href="#catalog" class="btn">Смотреть компьютеры →</a>
+      </div>
+    </div>
+
+    <section id="catalog">
+      <div class="container">
+
+        <h2>Компьютеры</h2>
+        <p class="subtitle">Наши сборки и актуальные предложения.</p>
+
+        <div class="grid">
+
+          <article class="card">
+            <div class="product-image">🖥️</div>
+            <div class="card-content">
+              <h3>Игровой ПК №1</h3>
+              <p>Бюджетная сборка для игр и повседневных задач.</p>
+              <div class="price">8 000 грн</div>
+              <div class="status">Наличие уточняется</div><br>
+              <a href="#contacts" class="btn">Подробнее</a>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="product-image">🖥️</div>
+            <div class="card-content">
+              <h3>Игровой ПК №2</h3>
+              <p>Сборка для игр, учёбы и работы.</p>
+              <div class="price">11 000 грн</div>
+              <div class="status">Наличие уточняется</div><br>
+              <a href="#contacts" class="btn">Подробнее</a>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="product-image">🖥️</div>
+            <div class="card-content">
+              <h3>Игровой ПК №3</h3>
+              <p>Характеристики и результаты тестов добавляются.</p>
+              <div class="price">11 000 грн</div>
+              <div class="status">Наличие уточняется</div><br>
+              <a href="#contacts" class="btn">Подробнее</a>
+            </div>
+          </article>
+
+        </div>
+
+        <p class="notice">
+          Характеристики, фотографии и тесты каждой сборки
+          будут добавлены в каталог.
+        </p>
+
+      </div>
+    </section>
+
+    <section id="services">
+      <div class="container">
+
+        <h2>Наши услуги</h2>
+        <p class="subtitle">Помогаем подобрать компьютер под ваши задачи.</p>
+
+        <div class="grid">
+
+          <div class="card service">
+            <div class="service-icon">🎮</div>
+            <h3>Готовые компьютеры</h3>
+            <p>Подбор игрового ПК под ваш бюджет.</p>
+          </div>
+
+          <div class="card service">
+            <div class="service-icon">🔧</div>
+            <h3>Сборка под заказ</h3>
+            <p>Индивидуальный подбор комплектующих.</p>
+          </div>
+
+          <div class="card service">
+            <div class="service-icon">⚙️</div>
+            <h3>Комплектующие</h3>
+            <p>Видеокарты, процессоры, память и накопители.</p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="container">
+
+        <h2>О KIBER_EPOCH</h2>
+
+        <p class="subtitle">
+          Занимаемся подбором, сборкой и продажей компьютеров.
+          Помогаем найти подходящую конфигурацию под конкретные
+          задачи и бюджет.
+        </p>
+
+        <div class="banner">
+          <h2>Соберём компьютер под тебя</h2>
+
+          <p>
+            Расскажи, в какие игры хочешь играть и какой у тебя
+            бюджет. Подберём подходящие комплектующие.
+          </p>
+
+          <a href="#contacts" class="btn">Как связаться →</a>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="contacts">
+      <div class="container">
+
+        <h2>Контакты</h2>
+
+        <p class="subtitle">
+          Здесь скоро появятся ссылки на наш Telegram,
+          TikTok и другие способы связи.
+        </p>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      © <span id="year"></span> KIBER_EPOCH.
+      Игровые компьютеры и комплектующие.
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent =
+      new Date().getFullYear();
+  </script>
+
+</body>
+</html>
