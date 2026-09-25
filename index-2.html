@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0B1020">
+  <meta name="description" content="KIBER_EPOCH — игровые компьютеры, сборка ПК под задачи и бюджет, апгрейд и диагностика.">
+  <title>KIBER_EPOCH — игровые компьютеры и сборка ПК</title>
+  <style>
+    :root{--bg:#0B1020;--panel:#111a2e;--panel2:#151f34;--line:#2a3854;--txt:#eef4ff;--muted:#aab9d1;--blue:#4361ff;--ice:#7ac8ff;--red:#ff3b5c;--max:1160px}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;scroll-padding-top:85px}
+    body{margin:0;background:var(--bg);color:var(--txt);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;line-height:1.55}
+    a{color:inherit;text-decoration:none}
+    button,a{ -webkit-tap-highlight-color:transparent}
+    a:focus-visible{outline:3px solid var(--ice);outline-offset:4px;border-radius:4px}
+    .wrap{width:min(calc(100% - 38px),var(--max));margin:auto}
+    .top{position:sticky;top:0;z-index:20;background:rgba(11,16,32,.93);backdrop-filter:blur(17px);border-bottom:1px solid rgba(140,166,220,.16)}
+    .nav{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand{display:flex;align-items:center;gap:12px;font-weight:900;letter-spacing:.065em;font-size:1.08rem;white-space:nowrap}
+    .bird{width:50px;height:50px;flex:0 0 auto;filter:drop-shadow(0 0 10px rgba(67,97,255,.3))}
+    .navlinks{display:flex;gap:24px;align-items:center;color:#c5d3eb;font-weight:650;font-size:.94rem}
+    .navlinks a:hover,.foot a:hover{color:var(--ice)}
+    .nav-cta{border:1px solid var(--blue);padding:10px 17px;border-radius:11px;background:rgba(67,97,255,.13)}
+    .hero{position:relative;overflow:hidden;padding:94px 0 86px;border-bottom:1px solid rgba(140,166,220,.14)}
+    .hero:before{content:"";position:absolute;right:-190px;top:-290px;width:800px;height:800px;border-radius:50%;background:radial-gradient(circle,rgba(67,97,255,.19),transparent 61%);pointer-events:none}
+    .hero:after{content:"";position:absolute;left:-120px;bottom:-290px;width:620px;height:620px;border-radius:50%;background:radial-gradient(circle,rgba(255,59,92,.08),transparent 62%);pointer-events:none}
+    .hero-grid{position:relative;display:grid;grid-template-columns:1.08fr .92fr;align-items:center;gap:35px}
+    .eyebrow{display:inline-flex;gap:9px;align-items:center;color:#b5c6f9;text-transform:uppercase;letter-spacing:.19em;font-weight:800;font-size:.73rem}
+    .eyebrow:before{content:"";display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--red);box-shadow:0 0 12px rgba(255,59,92,.6)}
+    h1{font-size:clamp(2.9rem,6.4vw,5.75rem);line-height:1.01;letter-spacing:-.06em;margin:21px 0 22px}
+    .gradient{background:linear-gradient(105deg,#fff 7%,#aac0ff 47%,#618cff);background-clip:text;color:transparent}
+    .hero p{max-width:560px;color:#b9c8df;font-size:1.12rem;margin:0 0 29px}
+    .actions{display:flex;gap:12px;flex-wrap:wrap}
+    .btn{display:inline-flex;align-items:center;justify-content:center;min-height:49px;padding:12px 20px;font-weight:800;border-radius:11px;border:1px solid transparent;transition:transform .15s,background .15s}
+    .btn:hover{transform:translateY(-2px)}
+    .btn.primary{background:var(--blue);color:white;box-shadow:0 10px 35px rgba(67,97,255,.18)}
+    .btn.ghost{border-color:#405170;background:rgba(255,255,255,.025)}
+    .smallnote{font-size:.82rem;color:var(--muted);margin-top:18px}
+    .illustration{min-height:370px;display:grid;place-items:center;position:relative}
+    .halo{position:absolute;aspect-ratio:1;width:min(92%,420px);border-radius:50%;border:1px solid rgba(96,126,255,.24);box-shadow:0 0 0 34px rgba(70,92,170,.035),0 0 0 68px rgba(70,92,170,.025)}
+    .illustration .bird{position:relative;width:min(95%,380px);height:auto;filter:drop-shadow(0 0 40px rgba(67,97,255,.28))}
+    .monitor{position:absolute;right:5%;bottom:3%;width:95px;height:74px;border-radius:10px;border:4px solid #425787;background:#10192a;transform:rotate(8deg);box-shadow:0 0 25px rgba(67,97,255,.13)}
+    .monitor:before{content:"";position:absolute;inset:10px;background:linear-gradient(135deg,#203663,#4361ff 53%,#ff3b5c 54%,#6d1b3b);border-radius:3px}
+    .monitor:after{content:"";position:absolute;left:39px;bottom:-19px;width:15px;height:15px;border-bottom:3px solid #425787;border-left:3px solid #425787;border-right:3px solid #425787}
+    section{padding:86px 0}
+    .section-h{max-width:730px;margin-bottom:29px}
+    .kicker{font-size:.76rem;letter-spacing:.16em;text-transform:uppercase;color:#8ca4ff;font-weight:850;margin-bottom:9px}
+    h2{font-size:clamp(1.9rem,4.4vw,3rem);line-height:1.12;letter-spacing:-.04em;margin:0 0 13px}
+    .lead{color:var(--muted);margin:0}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .tile{background:linear-gradient(160deg,#151f36 0%,#101829 85%);border:1px solid var(--line);border-radius:19px;padding:25px;min-height:245px;display:flex;flex-direction:column}
+    .tile .num{font-size:.79rem;letter-spacing:.13em;color:#8fa5d2;font-weight:800}
+    .tile h3{font-size:1.33rem;line-height:1.23;letter-spacing:-.025em;margin:26px 0 10px}
+    .tile p{color:var(--muted);font-size:.95rem;margin:0 0 19px}
+    .tile a{margin-top:auto;color:#a9bcff;font-weight:750}
+    .tile a:hover{color:white}
+    .tile.feature{border-color:#4b65d0;background:linear-gradient(150deg,rgba(67,97,255,.24),#111b31 75%)}
+    .info{background:#0e1728;border-block:1px solid rgba(140,166,220,.12)}
+    .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+    .step{padding:6px 0}
+    .step .circle{display:grid;place-items:center;border-radius:13px;width:42px;height:42px;background:rgba(67,97,255,.16);border:1px solid rgba(100,127,255,.35);font-weight:850;color:#b9c6ff}
+    .step h3{margin:17px 0 8px;font-size:1.13rem}
+    .step p{color:var(--muted);margin:0;font-size:.96rem}
+    .contact{padding:45px;border-radius:23px;border:1px solid #435ea9;background:radial-gradient(circle at 100% 0,rgba(67,97,255,.22),transparent 40%),linear-gradient(125deg,#18243d,#101827);display:flex;justify-content:space-between;align-items:center;gap:24px}
+    .contact p{color:var(--muted);max-width:610px;margin:9px 0 0}
+    .contact .btn{flex:0 0 auto}
+    .status{display:inline-block;margin-top:15px;color:#cad6ec;font-size:.87rem}
+    .foot{border-top:1px solid rgba(140,166,220,.14);padding:29px 0 34px;color:#8d9db9;font-size:.88rem}
+    .foot .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
+    @media(max-width:850px){.nav{flex-wrap:wrap;padding:11px 0;gap:7px}.navlinks{width:100%;overflow-x:auto;gap:20px;padding:3px 0 8px;white-space:nowrap}.hero{padding:66px 0 56px}.hero-grid{grid-template-columns:1fr}.illustration{min-height:275px;max-width:400px;margin:auto}.illustration .bird{width:260px}.grid,.steps{grid-template-columns:1fr 1fr}.contact{flex-direction:column;align-items:flex-start}}
+    @media(max-width:560px){.wrap{width:min(calc(100% - 32px),var(--max))}.navlinks{font-size:.83rem}.hero h1{font-size:clamp(2.8rem,13vw,4.4rem)}.hero p{font-size:1rem}.illustration{min-height:245px}.illustration .bird{width:240px}.monitor{right:0}.grid,.steps{grid-template-columns:1fr}section{padding:64px 0}.tile{min-height:220px}.contact{padding:26px}.btn{width:100%}.actions{flex-direction:column}.nav-cta{padding:5px 9px}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+  </style>
+</head>
+<body>
+<!-- Самодостаточный файл: логотип в SVG, CSS внутри HTML. Внешних картинок, шрифтов и скриптов нет. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" aria-hidden="true" style="position:absolute;overflow:hidden">
+  <defs>
+    <linearGradient id="eagleBlue" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#9bd8ff"/><stop offset=".48" stop-color="#4361ff"/><stop offset="1" stop-color="#1c2f79"/></linearGradient>
+    <linearGradient id="eagleSilver" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#e6f2ff"/><stop offset=".7" stop-color="#739bcb"/><stop offset="1" stop-color="#344b78"/></linearGradient>
+    <symbol id="eagleMark" viewBox="0 0 500 500">
+      <path d="M245 55 189 122 103 116 154 158 63 170 144 190 63 229 151 224 83 274 185 250 212 297 271 380 258 287 320 239 440 209 342 205 437 169 327 173 406 125 304 145Z" fill="url(#eagleBlue)" stroke="#94baff" stroke-width="6" stroke-linejoin="round"/>
+      <path d="M247 85 210 160 147 178 215 193 175 225 238 211 285 231 339 205 293 178 312 132Z" fill="url(#eagleSilver)" stroke="#b9d7f6" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M259 187 330 196 288 216 262 249 240 217 201 211Z" fill="#12203d" stroke="#6d96d3" stroke-width="4"/>
+      <path d="M263 215 325 213 277 236Z" fill="#edf6ff"/>
+      <path d="M278 184 306 187 294 194 281 193Z" fill="#ff3b5c"/>
+      <path d="m144 287 64-28-24 60 54-27-60 94 13-64-57 20Z" fill="#4269f7" stroke="#9dc8ff" stroke-width="4" stroke-linejoin="round"/>
+      <path d="m316 259 40-16-26 48 37-8-71 80 21-60-38 14Z" fill="#ff3b5c" stroke="#ff8296" stroke-width="3" stroke-linejoin="round"/>
+    </symbol>
+  </defs>
+</svg>
+<header class="top">
+  <div class="wrap nav">
+    <a class="brand" href="#home" aria-label="KIBER_EPOCH — на главную"><svg class="bird" role="img" aria-label="Фирменная птица"><use href="#eagleMark"/></svg><span>KIBER_EPOCH</span></a>
+    <nav class="navlinks" aria-label="Навигация"><a href="#home">Главная</a><a href="#catalog">Направления</a><a href="#about">Как работаем</a><a class="nav-cta" href="#contacts">Контакты</a></nav>
+  </div>
+</header>
+<main>
+  <section class="hero" id="home">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow">Игровые компьютеры и сборка ПК</div>
+        <h1>ТВОЯ<br><span class="gradient">НОВАЯ ЭПОХА</span><br>МОЩНОСТИ.</h1>
+        <p>KIBER_EPOCH — готовые компьютеры, индивидуальная сборка под задачи и бюджет, помощь с апгрейдом и диагностикой.</p>
+        <div class="actions"><a class="btn primary" href="#catalog">Что мы предлагаем ↗</a><a class="btn ghost" href="#contacts">Как связаться</a></div>
+        <div class="smallnote">Тёмный графит · Насыщенный синий · Красный акцент</div>
+      </div>
+      <div class="illustration" aria-label="Фирменная эмблема KIBER_EPOCH"><div class="halo"></div><svg class="bird" role="img" aria-label="Стилизованная хищная птица с молниями"><use href="#eagleMark"/></svg><div class="monitor" aria-hidden="true"></div></div>
+    </div>
+  </section>
+  <section id="catalog">
+    <div class="wrap">
+      <div class="section-h"><div class="kicker">Направления</div><h2>Компьютер под твои задачи</h2><p class="lead">Здесь нет выдуманных цен и товаров: реальные сборки с фотографиями и характеристиками добавим в каталог отдельно.</p></div>
+      <div class="grid">
+        <article class="tile feature"><div class="num">01 / ГОТОВЫЕ ПК</div><h3>Игровые компьютеры</h3><p>Готовые системные блоки. Актуальные предложения, фотографии, комплектации и цены появятся здесь.</p><a href="#contacts">Узнать о наличии →</a></article>
+        <article class="tile"><div class="num">02 / ПОД ЗАКАЗ</div><h3>Сборка под бюджет</h3><p>Подберём конфигурацию под игры, учёбу, работу и желаемый бюджет.</p><a href="#contacts">Обсудить сборку →</a></article>
+        <article class="tile"><div class="num">03 / ОБСЛУЖИВАНИЕ</div><h3>Апгрейд и диагностика</h3><p>Поможем разобраться с производительностью и возможностями обновления комплектующих.</p><a href="#contacts">Задать вопрос →</a></article>
+      </div>
+    </div>
+  </section>
+  <section class="info" id="about">
+    <div class="wrap">
+      <div class="section-h"><div class="kicker">Как работаем</div><h2>Понятный путь к своему ПК</h2></div>
+      <div class="steps">
+        <div class="step"><span class="circle">01</span><h3>Обсуждаем задачи</h3><p>Игры, программы, желаемая производительность и бюджет.</p></div>
+        <div class="step"><span class="circle">02</span><h3>Подбираем решение</h3><p>Согласовываем комплектующие и итоговую конфигурацию.</p></div>
+        <div class="step"><span class="circle">03</span><h3>Проверяем результат</h3><p>Условия проверки и передачи компьютера обсуждаем до покупки.</p></div>
+      </div>
+    </div>
+  </section>
+  <section id="contacts">
+    <div class="wrap">
+      <div class="contact"><div><div class="kicker">Контакты</div><h2>Связаться с KIBER_EPOCH</h2><p>Ссылки на твои Telegram, Instagram и другие способы связи пока не указаны — добавим их, когда ты пришлёшь реальные контакты.</p><span class="status">Перед отправкой сайта покупателям нужно заполнить этот блок.</span></div><a class="btn primary" href="#home">Вернуться наверх ↑</a></div>
+    </div>
+  </section>
+</main>
+<footer class="foot"><div class="wrap"><span>© KIBER_EPOCH</span><span>Игровые ПК · Сборка · Апгрейд</span></div></footer>
+</body></html>
