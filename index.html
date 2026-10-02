@@ -457,6 +457,54 @@ window.KIBER_DATA = {
 
 </script>
   
+
+  <!-- Only publishable key may be placed here. Never put a service_role or secret key into HTML. -->
+  <script>
+    window.KIBER_ADMIN_CONFIG = {
+      url: "https://stdeyylesaqksdueawkb.supabase.co",
+      publishableKey: "sb_publishable_-y0EXfFdow6IFWbCm_PYeQ_YyqsujNB"
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+/* KIBER_EPOCH / admin v1 */
+.epoch-menu-button { background:linear-gradient(125deg,#2260a7,#2a83d6)!important;border:1px solid #9bd9ff!important;color:#fff!important;box-shadow:0 0 0 3px #58afff29,0 8px 25px #07182b!important;min-height:48px; }
+.epoch-menu-button:focus-visible { outline:3px solid #fff;outline-offset:3px; }
+.epoch-menu-button .menu-bars i { background:#fff!important; }
+.epoch-admin-nav { border-color:#76dda5!important;background:linear-gradient(125deg,#174d45,#122b35)!important; }
+.epoch-admin-nav .drawer-icon { background:#205d57;color:#b6ffdf; }
+.epoch-admin-page { padding:48px 0 80px; min-height:75vh; }
+.epoch-admin-head { display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px; }
+.epoch-admin-head h1 { font-size:clamp(1.9rem,6vw,3.3rem);letter-spacing:-.05em;line-height:1.07;margin:12px 0 0; }
+.epoch-admin-shell { display:grid;grid-template-columns:minmax(250px,.8fr) minmax(0,1.4fr);gap:18px;align-items:start; }
+.epoch-admin-card { border:1px solid #42638b;border-radius:20px;padding:23px;background:linear-gradient(140deg,#1a304e,#101d31);box-shadow:0 14px 38px #03091455;min-width:0; }
+.epoch-admin-card h2 { font-size:1.2rem;margin:0 0 12px; }
+.epoch-admin-note {color:#b8cee8;font-size:.91rem;line-height:1.5;}
+.epoch-admin-alert {min-height:24px;color:#9de8bb;font-weight:650;margin:12px 0;}
+.epoch-admin-alert[data-error="true"] { color:#ffb5bd; }
+.epoch-admin-form { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px; }
+.epoch-admin-form label,.epoch-admin-login label {display:grid;gap:6px;font-size:.84rem;color:#c8def5;font-weight:700;}
+.epoch-admin-form input,.epoch-admin-form select,.epoch-admin-form textarea,.epoch-admin-login input {
+  width:100%;min-width:0;padding:12px 13px;background:#0b1829;color:#fff;border:1px solid #496b93;border-radius:11px;font:inherit;
+}
+.epoch-admin-form textarea {min-height:90px;resize:vertical;}
+.epoch-admin-form .admin-wide {grid-column:1/-1;}
+.epoch-admin-actions {display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+.epoch-admin-actions button {padding:12px 17px;border-radius:10px;border:1px solid #47719a;background:#1b3b62;color:#fff;font:inherit;font-weight:800;cursor:pointer;}
+.epoch-admin-actions button[type="submit"] {background:#2873b6;border-color:#9bd9ff;}
+.epoch-admin-actions button:disabled {opacity:.5;cursor:wait;}
+.epoch-admin-login {display:grid;gap:13px;max-width:460px;}
+.epoch-admin-items {display:grid;gap:10px;}
+.epoch-admin-item {border:1px solid #385677;border-radius:13px;padding:14px;background:#11243b;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;}
+.epoch-admin-item strong {display:block;}.epoch-admin-item small {color:#abcae7;}
+.epoch-admin-item button {padding:9px 12px;border-radius:9px;border:1px solid #67a3dd;background:#234b75;color:#fff;cursor:pointer;}
+.epoch-admin-photo {width:min(100%,320px);max-height:220px;object-fit:contain;background:#0b1829;border-radius:12px;border:1px solid #42638b;margin-top:6px;}
+.epoch-admin-list-top {display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+.epoch-admin-count {color:#a8c1de;font-size:.86rem;}
+.epoch-admin-badge {display:inline-flex;padding:4px 7px;border-radius:6px;background:#33516d;color:#fff;font-size:.73rem;font-weight:800;}
+@media(max-width:850px){.epoch-admin-shell{grid-template-columns:1fr;}.epoch-admin-page{padding-top:27px;}}
+@media(max-width:530px){.epoch-admin-form{grid-template-columns:1fr;}.epoch-admin-card{padding:17px;}.epoch-admin-form .admin-wide{grid-column:auto;}}
+</style>
 </head>
 <body>
   <a class="skip-link" href="#main">К содержимому</a>
@@ -495,6 +543,11 @@ window.KIBER_DATA = {
         <a class="drawer-link" href="#/trade" data-route="trade">
           <span class="drawer-number">03</span><span class="drawer-icon" aria-hidden="true">⇄</span>
           <span class="drawer-link-text"><strong>Выкуп / обмен</strong><small>Предложи свою технику</small></span>
+          <span class="drawer-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="drawer-link epoch-admin-nav" id="epoch-admin-link" href="#/admin" data-route="admin" hidden>
+          <span class="drawer-number">04</span><span class="drawer-icon" aria-hidden="true">⚙</span>
+          <span class="drawer-link-text"><strong>Админка</strong><small>Добавлять и редактировать компьютеры</small></span>
           <span class="drawer-arrow" aria-hidden="true">↗</span>
         </a>
       </nav>
@@ -580,13 +633,13 @@ window.KIBER_DATA = {
         <span class="eyebrow">ГОТОВЫЕ КОМПЬЮТЕРЫ</span>
         <h1 id="catalog-title">Найди свой <em>компьютер.</em></h1>
         <p class="section-lead">Без бесконечной ленты: фильтры, характеристики и отдельная карточка каждой сборки.</p>
-        <div class="notice"><span class="notice-dot"></span><span>Сейчас здесь демонстрационные карточки. Они не обозначают реальные товары в наличии. Перед публикацией замените их на настоящие сборки, фотографии и цены.</span></div>
+        <div class="notice" id="epoch-demo-notice"><span class="notice-dot"></span><span>Сейчас здесь демонстрационные карточки. Они не обозначают реальные товары в наличии. Перед публикацией замените их на настоящие сборки, фотографии и цены.</span></div>
         <div class="catalog-bar">
           <label class="search-box"><span aria-hidden="true">⌕</span><span class="visually-hidden">Поиск компьютера</span><input id="catalog-search" type="search" placeholder="Название или характеристика..." autocomplete="off"></label>
           <label class="filter-box"><span class="visually-hidden">Категория</span><select id="catalog-category"><option value="all">Все задачи</option><option value="gaming">Для игр</option><option value="work">Учёба и работа</option><option value="universal">Универсальные</option></select></label>
           <label class="filter-box"><span class="visually-hidden">Сортировка</span><select id="catalog-sort"><option value="default">По умолчанию</option><option value="price-asc">Сначала дешевле</option><option value="price-desc">Сначала дороже</option></select></label>
         </div>
-        <div class="catalog-meta"><span id="catalog-count" aria-live="polite"></span><span>Цена и наличие уточняются по каждой сборке</span></div>
+        <p id="epoch-catalog-status" class="epoch-admin-note" role="status" aria-live="polite"></p><div class="catalog-meta"><span id="catalog-count" aria-live="polite"></span><span>Цена и наличие уточняются по каждой сборке</span></div>
         <div id="product-grid" class="product-grid"></div>
         <div id="catalog-empty" class="empty" hidden>По вашему запросу ничего не найдено. Измените фильтр или поиск.</div>
       </div>
@@ -728,6 +781,54 @@ window.KIBER_DATA = {
         </div>
       </div>
     </section>
+  
+    <!-- URL для владельца: #/admin. Публичной ссылки на вход нет. -->
+    <section class="page epoch-admin-page" data-page="admin" aria-labelledby="epoch-admin-title" hidden>
+      <div class="shell">
+        <div class="epoch-admin-head"><div><span class="eyebrow">ЗАКРЫТЫЙ РАЗДЕЛ / KIBER_EPOCH</span><h1 id="epoch-admin-title">Управление <em>каталогом.</em></h1></div><a href="#/catalog" class="btn btn-quiet">← Каталог</a></div>
+        <div id="epoch-admin-alert" class="epoch-admin-alert" role="status" aria-live="polite"></div>
+        <div id="epoch-admin-setup" class="epoch-admin-card" hidden>
+          <h2>Подключение ещё не выполнено</h2><p class="epoch-admin-note">Сначала выполни инструкцию из файла SETUP.txt: создай базу Supabase, настрой первого администратора и впиши Project URL и publishable key в index.html. Пока это не сделано, изменения не сохраняются на сайте.</p>
+        </div>
+        <div id="epoch-admin-auth" class="epoch-admin-card" hidden>
+          <h2>Вход для администратора</h2>
+          <p class="epoch-admin-note">Эту страницу можно открыть по прямой ссылке, но редактор и изменения каталога доступны только пользователям с правами администратора.</p>
+          <form id="epoch-admin-login" class="epoch-admin-login">
+            <label>Электронная почта<input name="email" type="email" autocomplete="username" required></label>
+            <label>Пароль<input name="password" type="password" autocomplete="current-password" required></label>
+            <div class="epoch-admin-actions"><button type="submit">Войти →</button></div>
+          </form>
+        </div>
+        <div id="epoch-admin-panel" hidden>
+          <div class="epoch-admin-actions" style="justify-content:flex-end;margin-bottom:16px"><button type="button" id="epoch-admin-signout">Выйти</button></div>
+          <div class="epoch-admin-shell">
+            <section class="epoch-admin-card" aria-labelledby="epoch-admin-list-title">
+              <div class="epoch-admin-list-top"><h2 id="epoch-admin-list-title">Компьютеры</h2><span id="epoch-admin-count" class="epoch-admin-count"></span></div>
+              <div class="epoch-admin-actions" style="margin-bottom:14px"><button type="button" id="epoch-admin-new">+ Новый компьютер</button></div>
+              <div id="epoch-admin-items" class="epoch-admin-items"></div>
+            </section>
+            <section class="epoch-admin-card" aria-labelledby="epoch-admin-edit-title">
+              <h2 id="epoch-admin-edit-title">Добавить компьютер</h2>
+              <form id="epoch-product-form" class="epoch-admin-form">
+                <label class="admin-wide">Название<input name="title" maxlength="120" required placeholder="Например: Ryzen 5 5600 / RTX 3060"></label>
+                <label>Цена, грн<input name="price" type="number" min="0" step="1" placeholder="Например: 22500"></label>
+                <label>Категория<select name="category"><option value="gaming">Игровой</option><option value="work">Учёба и работа</option><option value="universal">Универсальный</option></select></label>
+                <label>Метка<input name="tag" maxlength="70" placeholder="Например: Для Full HD"></label>
+                <label>Статус<select name="status"><option value="draft">Черновик — скрыт</option><option value="published">Опубликован</option><option value="sold">Продан</option></select></label>
+                <label class="admin-wide">Короткое описание<input name="short" maxlength="240" placeholder="Игры · работа · апгрейд"></label>
+                <label class="admin-wide">Характеристики — по одной в строке<textarea name="specs" rows="6" required placeholder="Процессор: AMD Ryzen 5 5600&#10;Видеокарта: RTX 3060&#10;ОЗУ: 16 ГБ&#10;SSD: 500 ГБ"></textarea></label>
+                <label class="admin-wide">Полное описание<textarea name="description" rows="5" required></textarea></label>
+                <label class="admin-wide">Фотография с телефона<input name="imageFile" type="file" accept="image/jpeg,image/png,image/webp"></label>
+                <label class="admin-wide">Или ссылка на фото (HTTPS)<input name="imageUrl" type="url" placeholder="https://..." autocomplete="off"></label>
+                <div class="admin-wide"><img id="epoch-admin-preview" class="epoch-admin-photo" alt="Предпросмотр фотографии" hidden><p class="epoch-admin-note">Максимум 5 МБ; JPEG, PNG или WebP. Новое фото заменит ссылку в карточке.</p></div>
+                <div class="epoch-admin-actions admin-wide"><button id="epoch-admin-save" type="submit">Сохранить компьютер</button><button id="epoch-admin-reset" type="button">Очистить</button><button id="epoch-admin-delete" type="button" hidden>Удалить карточку</button></div>
+              </form>
+            </section>
+          </div>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <!-- ДЕТАЛИ ТОВАРА И ЗАЯВКА -->
@@ -778,6 +879,9 @@ window.KIBER_DATA = {
 (() => {
   "use strict";
   const DATA = window.KIBER_DATA;
+  const KIBER_CFG = window.KIBER_ADMIN_CONFIG;
+  if (KIBER_CFG && KIBER_CFG.url && KIBER_CFG.publishableKey &&
+      !KIBER_CFG.url.includes("YOUR_") && !KIBER_CFG.publishableKey.includes("YOUR_")) DATA.products = [];
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
   const money = (n) => typeof n === "number"
@@ -829,13 +933,13 @@ window.KIBER_DATA = {
 
   function route() {
     closeMenu(false);
-    const page = (location.hash.match(/^#\/(home|catalog|assembly|repair|trade)$/) || [,"home"])[1];
+    const page = (location.hash.match(/^#\/(home|catalog|assembly|repair|trade|admin)$/) || [,"home"])[1];
     $$("[data-page]").forEach((node) => node.hidden = node.dataset.page !== page);
     $$("[data-route]").forEach((a) => {
       if (a.dataset.route === page) a.setAttribute("aria-current","page");
       else a.removeAttribute("aria-current");
     });
-    const headings = {home:"О нас",catalog:"Готовые компьютеры",assembly:"Сборка из ваших комплектующих",repair:"Ремонт и обслуживание",trade:"Обмены"};
+    const headings = {home:"О нас",catalog:"Готовые компьютеры",assembly:"Сборка из ваших комплектующих",repair:"Ремонт и обслуживание",trade:"Обмены",admin:"Админка"};
     document.title = headings[page] + " | KIBER_EPOCH";
     window.scrollTo({top:0,behavior:"instant"});
     if (page === "catalog") renderProducts();
@@ -1035,6 +1139,7 @@ window.KIBER_DATA = {
     if (e.target === $("#product-dialog")) $("#product-dialog").close();
   });
   $("#year").textContent = String(new Date().getFullYear());
+  window.KIBER_RENDER_PRODUCTS = renderProducts;
   renderContacts(); renderProducts(); initForms(); route();
   if (new URLSearchParams(location.search).get("sent") === "1") {
     const msg = document.createElement("div");
@@ -1046,5 +1151,174 @@ window.KIBER_DATA = {
 })();
 
 </script>
+
+<script>
+(() => {
+  "use strict";
+  const cfg = window.KIBER_ADMIN_CONFIG;
+  const ready = Boolean(cfg?.url && cfg?.publishableKey && !cfg.url.includes("YOUR_") && !cfg.publishableKey.includes("YOUR_"));
+  const $ = (q) => document.querySelector(q);
+  const notice = (msg, err=false) => {
+    const node = $("#epoch-admin-alert"); node.textContent=msg; node.dataset.error=String(err);
+  };
+  const show = (id, visible) => { $(id).hidden=!visible; };
+  const loginForm = $("#epoch-admin-login"), form = $("#epoch-product-form");
+  let api=null, admin=false, items=[], selected=null, previewObjectURL=null;
+  const bucket = "kiber-products";
+  function display() {
+    show("#epoch-admin-setup", !ready);
+    show("#epoch-admin-auth", ready && !admin);
+    show("#epoch-admin-panel", ready && admin);
+    show("#epoch-admin-link", ready && admin);
+  }
+  function resetForm() {
+    selected=null; form.reset(); $("#epoch-admin-edit-title").textContent="Добавить компьютер";
+    $("#epoch-admin-delete").hidden=true; $("#epoch-admin-save").textContent="Сохранить компьютер";
+    if(previewObjectURL) URL.revokeObjectURL(previewObjectURL);
+    previewObjectURL=null; $("#epoch-admin-preview").hidden=true;
+  }
+  function preview(src) {
+    const img=$("#epoch-admin-preview");img.hidden=!src;
+    if(src) img.src=src; else img.removeAttribute("src");
+  }
+  function editItem(row) {
+    resetForm(); selected=row.id;
+    for(const k of ["title","price","category","tag","status","short","description"]) {
+      form.elements[k].value=row[k] == null ? "" : String(row[k]);
+    }
+    form.elements.specs.value=(row.specs||[]).join("\n");
+    form.elements.imageUrl.value=row.image||"";
+    if(row.image) preview(row.image);
+    $("#epoch-admin-edit-title").textContent="Редактировать: "+row.title;
+    $("#epoch-admin-delete").hidden=false; $("#epoch-admin-save").textContent="Сохранить изменения";
+    $("#epoch-admin-edit-title").scrollIntoView({behavior:"smooth",block:"start"});
+  }
+  function renderAdminItems() {
+    const host=$("#epoch-admin-items"); host.replaceChildren();
+    $("#epoch-admin-count").textContent=items.length+" шт.";
+    if(!items.length) {const p=document.createElement("p");p.className="epoch-admin-note";p.textContent="Пока нет компьютеров. Добавь первую сборку.";host.append(p);return;}
+    for(const row of items) {
+      const wrapper=document.createElement("div");wrapper.className="epoch-admin-item";
+      const copy=document.createElement("div");
+      const title=document.createElement("strong");title.textContent=row.title;
+      const meta=document.createElement("small");
+      meta.textContent=(row.price==null?"Цена уточняется":new Intl.NumberFormat("uk-UA").format(row.price)+" грн")+" · "+({draft:"Черновик",published:"На сайте",sold:"Продан"}[row.status]||row.status);
+      copy.append(title,meta);
+      const button=document.createElement("button");button.type="button";button.textContent="Изменить";button.addEventListener("click",()=>editItem(row));
+      wrapper.append(copy,button);host.append(wrapper);
+    }
+  }
+  async function loadPublic() {
+    if(!api) return;
+    const {data,error}=await api.from("kiber_products").select("id,title,tag,category,price,description,specs,short,image,status").in("status",["published","sold"]).order("created_at",{ascending:false});
+    if(error) {
+      $("#epoch-catalog-status").textContent="Каталог временно не загрузился. Свяжись с нами, чтобы уточнить наличие.";
+      window.KIBER_DATA.products=[];window.KIBER_RENDER_PRODUCTS();
+      return;
+    }
+    $("#epoch-catalog-status").textContent="";
+    window.KIBER_DATA.products=(data||[]).map(p=>({...p, demo:false, specs:Array.isArray(p.specs)?p.specs:[]}));
+    $("#catalog-empty").textContent="Пока нет опубликованных компьютеров. Загляни позже или напиши нам.";
+    window.KIBER_RENDER_PRODUCTS();
+  }
+  async function loadAdmin() {
+    if(!api||!admin) return;
+    const {data,error}=await api.from("kiber_products").select("*").order("created_at",{ascending:false});
+    if(error) {notice("Не удалось получить карточки: "+error.message,true);return;}
+    items=data||[];renderAdminItems();
+  }
+  async function refreshIdentity() {
+    if(!api)return;
+    const {data:{user},error}=await api.auth.getUser();
+    if(error || !user) {admin=false;display();return;}
+    const check=await api.from("kiber_admins").select("user_id").eq("user_id",user.id).maybeSingle();
+    admin=!check.error && Boolean(check.data);
+    display();
+    if(admin) { await loadAdmin(); notice("Вход выполнен. Можно редактировать каталог.");}
+    else notice("У этой учётной записи нет прав администратора.",true);
+  }
+  loginForm.addEventListener("submit",async e=>{
+    e.preventDefault();if(!api)return;
+    const b=loginForm.querySelector('button[type="submit"]');b.disabled=true;
+    notice("Проверяем доступ...");
+    try {
+      const {error}=await api.auth.signInWithPassword({email:loginForm.elements.email.value.trim(),password:loginForm.elements.password.value});
+      if(error) throw error;
+      await refreshIdentity(); loginForm.elements.password.value="";
+    } catch(err) {notice("Не удалось войти: "+err.message,true);}
+    finally {b.disabled=false;}
+  });
+  $("#epoch-admin-signout").addEventListener("click",async()=>{
+    const {error}=await api.auth.signOut();
+    if(error){notice("Не удалось выйти: "+error.message,true);return;}
+    admin=false;items=[];resetForm();display();notice("Вы вышли из админки.");
+  });
+  $("#epoch-admin-new").addEventListener("click",()=>{resetForm();$("#epoch-admin-edit-title").scrollIntoView({behavior:"smooth",block:"start"});});
+  $("#epoch-admin-reset").addEventListener("click",resetForm);
+  form.elements.imageFile.addEventListener("change",()=>{
+    if(previewObjectURL) URL.revokeObjectURL(previewObjectURL);
+    previewObjectURL=null;
+    const file=form.elements.imageFile.files[0];
+    if(file) {previewObjectURL=URL.createObjectURL(file);preview(previewObjectURL);}
+    else preview(form.elements.imageUrl.value.trim());
+  });
+  form.elements.imageUrl.addEventListener("change",()=>{if(!form.elements.imageFile.files.length) preview(form.elements.imageUrl.value.trim());});
+  form.addEventListener("submit",async e=>{
+    e.preventDefault();if(!admin||!api)return;
+    const btn=$("#epoch-admin-save");btn.disabled=true;notice("Сохраняем компьютер...");
+    let uploaded=null;
+    try {
+      const file=form.elements.imageFile.files[0];
+      let image=form.elements.imageUrl.value.trim()||null;
+      if(image && new URL(image).protocol!=="https:") throw Error("Ссылка на фото должна начинаться с https://");
+      if(file) {
+        if(!["image/jpeg","image/png","image/webp"].includes(file.type)) throw Error("Выбери JPEG, PNG или WebP.");
+        if(file.size>5*1024*1024) throw Error("Размер фото не должен превышать 5 МБ.");
+        const ext={"image/jpeg":"jpg","image/png":"png","image/webp":"webp"}[file.type];
+        uploaded="products/"+crypto.randomUUID()+"."+ext;
+        const {error}=await api.storage.from(bucket).upload(uploaded,file,{contentType:file.type,upsert:false,cacheControl:"3600"});
+        if(error) throw error;
+        image=api.storage.from(bucket).getPublicUrl(uploaded).data.publicUrl;
+      }
+      const rawPrice=form.elements.price.value.trim();
+      const price=rawPrice===""?null:Number(rawPrice);
+      if(price!==null && (!Number.isSafeInteger(price)||price<0)) throw Error("Укажи корректную цену в гривнах.");
+      const specs=form.elements.specs.value.split("\n").map(x=>x.trim()).filter(Boolean);
+      if(!specs.length) throw Error("Добавь характеристики хотя бы одной строкой.");
+      const row={
+        title:form.elements.title.value.trim(),price,category:form.elements.category.value,
+        tag:form.elements.tag.value.trim(),status:form.elements.status.value,
+        short:form.elements.short.value.trim(),description:form.elements.description.value.trim(),specs,image
+      };
+      if(!row.title||!row.description) throw Error("Заполни название и описание.");
+      const query=selected?api.from("kiber_products").update(row).eq("id",selected):api.from("kiber_products").insert(row);
+      const {error}=await query;
+      if(error) throw error;
+      resetForm();await Promise.all([loadAdmin(),loadPublic()]);
+      notice("Сохранено! Статус «Опубликован» или «Продан» сразу виден покупателям.");
+    } catch(err) {
+      if(uploaded) await api.storage.from(bucket).remove([uploaded]);
+      notice("Не сохранилось: "+err.message,true);
+    } finally {btn.disabled=false;}
+  });
+  $("#epoch-admin-delete").addEventListener("click",async()=>{
+    if(!admin||!api||!selected)return;
+    const row=items.find(p=>p.id===selected);
+    if(!confirm("Удалить карточку «"+(row?.title||"компьютер")+"»? Отменить удаление нельзя."))return;
+    const {error}=await api.from("kiber_products").delete().eq("id",selected);
+    if(error){notice("Не удалось удалить: "+error.message,true);return;}
+    resetForm();await Promise.all([loadAdmin(),loadPublic()]);notice("Карточка удалена.");
+  });
+  if(!ready) {display();return;}
+  if(!window.supabase){notice("Не загрузилась библиотека Supabase. Проверь интернет и повтори.",true);display();return;}
+  api=window.supabase.createClient(cfg.url,cfg.publishableKey);
+  $("#epoch-demo-notice").hidden=true;
+  window.KIBER_DATA.products=[];window.KIBER_RENDER_PRODUCTS();
+  display();
+  loadPublic();
+  refreshIdentity();
+})();
+</script>
+
 </body>
 </html>
