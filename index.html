@@ -390,6 +390,37 @@ body.epoch-menu-open {overflow:hidden}
 .page[data-page="trade"] .trade-aside{background:radial-gradient(circle at 85% 0,#284c7d,transparent 58%),linear-gradient(145deg,#1b3050,#111c30);border-color:#41628f;box-shadow:0 15px 35px #0003}
 .page[data-page="trade"] .trade-aside .aside-big{display:grid;place-items:center;height:84px;width:84px;border-radius:22px;background:#254e80;color:#d3ebff}
 @media(max-width:760px){.assembly-hero h1{font-size:clamp(2rem,8.2vw,2.9rem);overflow-wrap:anywhere}.assembly-hero{padding:22px}.assembly-hero-copy{min-width:0}.assembly-hero h1{letter-spacing:-.055em}.page[data-page="catalog"] .catalog-bar{padding:10px}}
+
+/* KIBER_EPOCH | Product gallery v3 */
+.dialog-visual{position:relative;gap:10px;padding:12px;overflow:visible!important;max-height:none!important}
+#dialog-main-image{display:block;width:100%;height:min(52vh,520px);max-height:520px;object-fit:contain;background:#091321;border-radius:10px;cursor:zoom-in;touch-action:pan-y;user-select:none;-webkit-user-drag:none}
+.dialog-gallery-nav{position:absolute;top:calc(50% - 46px);transform:translateY(-50%);z-index:3;width:42px;height:42px;border-radius:50%;border:1px solid #7192b7;background:#0a1527d9;color:#fff;font-size:1.45rem;display:grid;place-items:center;cursor:pointer;box-shadow:0 6px 18px #0008;backdrop-filter:blur(5px)}
+.dialog-gallery-nav:hover{background:#183453}.dialog-gallery-nav:disabled{display:none}
+.dialog-gallery-prev{left:20px}.dialog-gallery-next{right:20px}
+.dialog-gallery-counter{position:absolute;right:18px;top:18px;z-index:3;padding:7px 10px;border-radius:999px;background:#07101ed9;border:1px solid #58708f;color:#eef6ff;font-size:.72rem;font-weight:900;letter-spacing:.04em;backdrop-filter:blur(5px)}
+.dialog-gallery-full{position:absolute;left:18px;top:18px;z-index:3;height:36px;padding:0 11px;border-radius:9px;border:1px solid #637f9f;background:#07101ed9;color:#fff;font:inherit;font-size:.72rem;font-weight:850;cursor:pointer;backdrop-filter:blur(5px)}
+.dialog-gallery-thumbs{width:100%;gap:9px;padding:2px 1px 4px;scroll-snap-type:x proximity;overscroll-behavior-inline:contain}
+.dialog-gallery-thumb{flex:0 0 72px;width:72px;height:72px;border-radius:10px;scroll-snap-align:start;opacity:.72;transition:opacity .15s,transform .15s,border-color .15s}
+.dialog-gallery-thumb:hover{opacity:1}.dialog-gallery-thumb[aria-current="true"]{opacity:1;outline:none;border:2px solid #83c9ff;transform:translateY(-1px)}
+#dialog-gallery-note{display:block;width:100%;padding:0!important;color:#9eb7d1!important;font-size:.68rem!important;letter-spacing:0!important;text-align:left!important}
+.gallery-lightbox{width:100vw;height:100vh;max-width:none;max-height:none;margin:0;padding:0;border:0;background:#02060df4;color:#fff;overflow:hidden}
+.gallery-lightbox::backdrop{background:#02060df4}
+.gallery-lightbox-inner{width:100%;height:100%;display:grid;place-items:center;position:relative;padding:56px 64px 54px;touch-action:pan-y}
+.gallery-lightbox img{max-width:100%;max-height:100%;object-fit:contain;user-select:none;-webkit-user-drag:none}
+.gallery-lightbox-close,.gallery-lightbox-prev,.gallery-lightbox-next{position:absolute;z-index:5;border:1px solid #647b97;background:#0a1424d9;color:#fff;cursor:pointer;backdrop-filter:blur(5px)}
+.gallery-lightbox-close{right:18px;top:18px;width:42px;height:42px;border-radius:50%;font-size:1.25rem}
+.gallery-lightbox-prev,.gallery-lightbox-next{top:50%;transform:translateY(-50%);width:48px;height:58px;border-radius:12px;font-size:1.65rem}.gallery-lightbox-prev{left:18px}.gallery-lightbox-next{right:18px}
+.gallery-lightbox-counter{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);padding:8px 12px;border-radius:999px;background:#0a1424d9;border:1px solid #647b97;font-size:.78rem;font-weight:900}
+@media(max-width:760px){
+  .dialog-visual{max-height:none!important;overflow:visible!important;padding:9px}
+  #dialog-main-image{height:min(48vh,430px);min-height:260px}
+  .dialog-gallery-nav{top:calc(50% - 42px);width:40px;height:40px}.dialog-gallery-prev{left:14px}.dialog-gallery-next{right:14px}
+  .dialog-gallery-counter{right:13px;top:13px}.dialog-gallery-full{left:13px;top:13px}
+  .dialog-gallery-thumb{flex-basis:64px;width:64px;height:64px}
+  .gallery-lightbox-inner{padding:52px 8px 52px}.gallery-lightbox-prev{left:8px}.gallery-lightbox-next{right:8px}
+}
+@media(max-width:420px){#dialog-main-image{height:340px;min-height:230px}.dialog-gallery-thumb{flex-basis:58px;width:58px;height:58px}.dialog-gallery-full{font-size:0;width:38px;padding:0}.dialog-gallery-full::after{content:"⛶";font-size:1.1rem}}
+
 </style>
   <script>
 /* Здесь позже можно заменить демонстрационные карточки на реальные товары.
@@ -902,6 +933,78 @@ window.KIBER_DATA = {
   let currentProduct = null;
   let previewURLs = [];
 
+  let dialogGallery = [];
+  let dialogGalleryIndex = 0;
+  const galleryVisual = $(".dialog-visual");
+  const galleryMainImage = $("#dialog-main-image");
+  const galleryThumbs = $("#dialog-gallery-thumbs");
+  const galleryNote = $("#dialog-gallery-note");
+  const galleryPrev = document.createElement("button");
+  const galleryNext = document.createElement("button");
+  const galleryCounter = document.createElement("div");
+  const galleryFull = document.createElement("button");
+  galleryPrev.type="button"; galleryPrev.className="dialog-gallery-nav dialog-gallery-prev"; galleryPrev.setAttribute("aria-label","Предыдущее фото"); galleryPrev.textContent="‹";
+  galleryNext.type="button"; galleryNext.className="dialog-gallery-nav dialog-gallery-next"; galleryNext.setAttribute("aria-label","Следующее фото"); galleryNext.textContent="›";
+  galleryCounter.className="dialog-gallery-counter"; galleryCounter.setAttribute("aria-live","polite");
+  galleryFull.type="button"; galleryFull.className="dialog-gallery-full"; galleryFull.setAttribute("aria-label","Открыть фото на весь экран"); galleryFull.textContent="На весь экран";
+  galleryVisual.append(galleryPrev,galleryNext,galleryCounter,galleryFull);
+
+  const galleryLightbox=document.createElement("dialog");
+  galleryLightbox.className="gallery-lightbox";
+  galleryLightbox.setAttribute("aria-label","Полноэкранный просмотр фотографий");
+  galleryLightbox.innerHTML='<div class="gallery-lightbox-inner"><button type="button" class="gallery-lightbox-close" aria-label="Закрыть">×</button><button type="button" class="gallery-lightbox-prev" aria-label="Предыдущее фото">‹</button><img alt=""><button type="button" class="gallery-lightbox-next" aria-label="Следующее фото">›</button><div class="gallery-lightbox-counter"></div></div>';
+  document.body.append(galleryLightbox);
+  const lightboxImage=$("img",galleryLightbox);
+  const lightboxCounter=$(".gallery-lightbox-counter",galleryLightbox);
+  const lightboxPrev=$(".gallery-lightbox-prev",galleryLightbox);
+  const lightboxNext=$(".gallery-lightbox-next",galleryLightbox);
+
+  function setGalleryIndex(index,{scrollThumb=true}={}){
+    if(!dialogGallery.length) return;
+    dialogGalleryIndex=(index+dialogGallery.length)%dialogGallery.length;
+    const src=dialogGallery[dialogGalleryIndex];
+    galleryMainImage.src=src;
+    galleryMainImage.alt=`Фото ${dialogGalleryIndex+1} — ${currentProduct?.title||"компьютер"}`;
+    galleryCounter.textContent=`${dialogGalleryIndex+1} / ${dialogGallery.length}`;
+    galleryNote.textContent=dialogGallery.length>1 ? `Фото ${dialogGalleryIndex+1} из ${dialogGallery.length} · листай свайпом или стрелками` : "Фото компьютера · нажми, чтобы увеличить";
+    const buttons=$$(".dialog-gallery-thumb",galleryThumbs);
+    buttons.forEach((btn,i)=>btn.setAttribute("aria-current",String(i===dialogGalleryIndex)));
+    if(scrollThumb && buttons[dialogGalleryIndex]) buttons[dialogGalleryIndex].scrollIntoView({behavior:"smooth",block:"nearest",inline:"center"});
+    const multiple=dialogGallery.length>1;
+    galleryPrev.disabled=!multiple; galleryNext.disabled=!multiple;
+    if(galleryLightbox.open){
+      lightboxImage.src=src; lightboxImage.alt=galleryMainImage.alt;
+      lightboxCounter.textContent=`${dialogGalleryIndex+1} / ${dialogGallery.length}`;
+      lightboxPrev.hidden=!multiple; lightboxNext.hidden=!multiple;
+    }
+  }
+  function moveGallery(delta){ if(dialogGallery.length>1) setGalleryIndex(dialogGalleryIndex+delta); }
+  function openGalleryLightbox(){
+    if(!dialogGallery.length) return;
+    setGalleryIndex(dialogGalleryIndex,{scrollThumb:false});
+    if(!galleryLightbox.open) galleryLightbox.showModal();
+    lightboxImage.src=dialogGallery[dialogGalleryIndex]; lightboxImage.alt=galleryMainImage.alt;
+    lightboxCounter.textContent=`${dialogGalleryIndex+1} / ${dialogGallery.length}`;
+    lightboxPrev.hidden=dialogGallery.length<2; lightboxNext.hidden=dialogGallery.length<2;
+  }
+  galleryPrev.addEventListener("click",()=>moveGallery(-1));
+  galleryNext.addEventListener("click",()=>moveGallery(1));
+  galleryFull.addEventListener("click",openGalleryLightbox);
+  galleryMainImage.addEventListener("click",openGalleryLightbox);
+  $(".gallery-lightbox-close",galleryLightbox).addEventListener("click",()=>galleryLightbox.close());
+  lightboxPrev.addEventListener("click",()=>moveGallery(-1)); lightboxNext.addEventListener("click",()=>moveGallery(1));
+  galleryLightbox.addEventListener("click",e=>{if(e.target===galleryLightbox)galleryLightbox.close();});
+  function addSwipe(node){
+    let startX=0,startY=0;
+    node.addEventListener("touchstart",e=>{const t=e.changedTouches[0];startX=t.clientX;startY=t.clientY;},{passive:true});
+    node.addEventListener("touchend",e=>{if(dialogGallery.length<2)return;const t=e.changedTouches[0];const dx=t.clientX-startX,dy=t.clientY-startY;if(Math.abs(dx)>55&&Math.abs(dx)>Math.abs(dy)*1.15)moveGallery(dx<0?1:-1);},{passive:true});
+  }
+  addSwipe(galleryMainImage); addSwipe($(".gallery-lightbox-inner",galleryLightbox));
+  document.addEventListener("keydown",e=>{
+    if(galleryLightbox.open){if(e.key==="ArrowLeft"){e.preventDefault();moveGallery(-1)}if(e.key==="ArrowRight"){e.preventDefault();moveGallery(1)}return;}
+    if($("#product-dialog").open){if(e.key==="ArrowLeft"){e.preventDefault();moveGallery(-1)}if(e.key==="ArrowRight"){e.preventDefault();moveGallery(1)}}
+  });
+
   const menuButton = $("#epoch-menu-button");
   const menuDrawer = $("#epoch-drawer");
   const menuBackdrop = $("#epoch-drawer-backdrop");
@@ -953,6 +1056,7 @@ window.KIBER_DATA = {
     document.title = headings[page] + " | KIBER_EPOCH";
     window.scrollTo({top:0,behavior:"instant"});
     if (page === "catalog") renderProducts();
+    if (galleryLightbox.open) galleryLightbox.close();
     if ($("#product-dialog").open) $("#product-dialog").close();
   }
 
@@ -1029,23 +1133,26 @@ window.KIBER_DATA = {
     const gallery = Array.isArray(currentProduct.images) && currentProduct.images.length
       ? currentProduct.images.filter(Boolean)
       : (currentProduct.image ? [currentProduct.image] : []);
-    const mainImage = $("#dialog-main-image");
-    const fallbackImage = mainImage.dataset.fallback || mainImage.src;
-    mainImage.src = gallery[0] || fallbackImage;
-    const thumbs = $("#dialog-gallery-thumbs");
-    thumbs.replaceChildren();
-    gallery.forEach((src,index) => {
+    const fallbackImage = galleryMainImage.dataset.fallback || galleryMainImage.src;
+    dialogGallery = gallery.length ? gallery : [fallbackImage];
+    dialogGalleryIndex = 0;
+    galleryThumbs.replaceChildren();
+    dialogGallery.forEach((src,index) => {
       const button=document.createElement("button");
-      button.type="button";button.className="dialog-gallery-thumb";button.setAttribute("aria-label","Фото "+(index+1));
+      button.type="button";button.className="dialog-gallery-thumb";button.setAttribute("aria-label","Показать фото "+(index+1));
       button.setAttribute("aria-current",String(index===0));
-      const img=document.createElement("img");img.src=src;img.alt="Фото "+(index+1)+" — "+currentProduct.title;button.append(img);
-      button.addEventListener("click",()=>{mainImage.src=src;thumbs.querySelectorAll(".dialog-gallery-thumb").forEach(x=>x.setAttribute("aria-current","false"));button.setAttribute("aria-current","true");});
-      thumbs.append(button);
+      const img=document.createElement("img");img.src=src;img.alt="Миниатюра фото "+(index+1);button.append(img);
+      button.addEventListener("click",()=>setGalleryIndex(index));
+      galleryThumbs.append(button);
     });
-    thumbs.hidden=gallery.length<2;
-    $("#dialog-gallery-note").textContent=gallery.length>1 ? (gallery.length+" фото · нажми на миниатюру") : (gallery.length===1 ? "ФОТО КОМПЬЮТЕРА" : "ДЕМОНСТРАЦИОННАЯ КАРТОЧКА");
-    $(".dialog-visual img").alt = currentProduct.image ? currentProduct.title : "Иллюстрация, не фотография товара";
-    $(".dialog-visual span").textContent = currentProduct.demo ? "ДЕМОНСТРАЦИОННАЯ КАРТОЧКА" : "ФОТО И КОМПЛЕКТАЦИЮ УТОЧНЯЙТЕ";
+    galleryThumbs.hidden=dialogGallery.length<2;
+    galleryCounter.hidden=gallery.length===0;
+    galleryFull.hidden=gallery.length===0;
+    setGalleryIndex(0,{scrollThumb:false});
+    if(!gallery.length){
+      galleryNote.textContent="Демонстрационная карточка";
+      galleryMainImage.alt="Иллюстрация, не фотография товара";
+    }
     const wrapper = $("#upgrade-controls");
     wrapper.replaceChildren();
     DATA.upgradeGroups.forEach((group) => {
