@@ -1310,25 +1310,51 @@ window.KIBER_DATA = {
     const maxBytes=Math.floor(4.5*1024*1024);
     const maxSide=2200;
     if(file.size<=maxBytes) return file;
-    let bitmap;
-    try { bitmap=await createImageBitmap(file,{imageOrientation:"from-image"}); }
-    catch { bitmap=await createImageBitmap(file); }
-    let width=bitmap.width, height=bitmap.height;
-    const scale=Math.min(1,maxSide/Math.max(width,height));
-    width=Math.max(1,Math.round(width*scale));
-    height=Math.max(1,Math.round(height*scale));
-    const canvas=document.createElement("canvas");
-    canvas.width=width; canvas.height=height;
-    const ctx=canvas.getContext("2d",{alpha:false});
-    ctx.drawImage(bitmap,0,0,width,height);
-    if(bitmap.close) bitmap.close();
-    const toBlob=(quality)=>new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(Error("Не удалось подготовить фото.")),"image/webp",quality));
-    let quality=.88;
-    let blob=await toBlob(quality);
-    while(blob.size>maxBytes && quality>.52){ quality-=.08; blob=await toBlob(quality); }
-    if(blob.size>maxBytes) throw Error("Фото слишком большое даже после автоматического сжатия. Попробуй другое фото.");
-    const base=(file.name||"photo").replace(/\.[^.]+$/,"").replace(/[^a-zA-Z0-9_-]+/g,"-").slice(0,40)||"photo";
-    return new File([blob],base+".webp",{type:"image/webp",lastModified:Date.now()});
+
+    // На некоторых Android-телефонах createImageBitmap не умеет декодировать
+    // отдельные JPEG. Сначала пробуем его, затем обычный <img> как запасной путь.
+    let source=null, objectUrl="";
+    try {
+      try { source=await createImageBitmap(file,{imageOrientation:"from-image"}); }
+      catch { source=await createImageBitmap(file); }
+    } catch {
+      objectUrl=URL.createObjectURL(file);
+      try {
+        source=await new Promise((resolve,reject)=>{
+          const img=new Image();
+          img.decoding="async";
+          img.onload=()=>resolve(img);
+          img.onerror=()=>reject(Error("Телефон не смог прочитать это фото. Попробуй открыть фото и сохранить копию или сделать скриншот."));
+          img.src=objectUrl;
+        });
+      } catch(err) {
+        URL.revokeObjectURL(objectUrl);
+        throw err;
+      }
+    }
+
+    try {
+      let width=source.width||source.naturalWidth, height=source.height||source.naturalHeight;
+      if(!width||!height) throw Error("Не удалось определить размер фото.");
+      const scale=Math.min(1,maxSide/Math.max(width,height));
+      width=Math.max(1,Math.round(width*scale));
+      height=Math.max(1,Math.round(height*scale));
+      const canvas=document.createElement("canvas");
+      canvas.width=width; canvas.height=height;
+      const ctx=canvas.getContext("2d",{alpha:false});
+      if(!ctx) throw Error("Браузер не смог подготовить фото.");
+      ctx.drawImage(source,0,0,width,height);
+      const toBlob=(quality)=>new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(Error("Не удалось подготовить фото.")),"image/webp",quality));
+      let quality=.88;
+      let blob=await toBlob(quality);
+      while(blob.size>maxBytes && quality>.44){ quality-=.08; blob=await toBlob(quality); }
+      if(blob.size>maxBytes) throw Error("Фото слишком большое даже после автоматического сжатия. Попробуй другое фото.");
+      const base=(file.name||"photo").replace(/\.[^.]+$/,"").replace(/[^a-zA-Z0-9_-]+/g,"-").slice(0,40)||"photo";
+      return new File([blob],base+".webp",{type:"image/webp",lastModified:Date.now()});
+    } finally {
+      if(source&&typeof source.close==="function") source.close();
+      if(objectUrl) URL.revokeObjectURL(objectUrl);
+    }
   }
   function display() {
     show("#epoch-admin-setup", !ready);
