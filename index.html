@@ -830,7 +830,7 @@ window.KIBER_DATA = {
                 <label class="admin-wide">Характеристики — по одной в строке<textarea name="specs" rows="6" required placeholder="Процессор: AMD Ryzen 5 5600&#10;Видеокарта: RTX 3060&#10;ОЗУ: 16 ГБ&#10;SSD: 500 ГБ"></textarea></label>
                 <label class="admin-wide">Полное описание<textarea name="description" rows="5" required></textarea></label>
                 <label class="admin-wide">Фотографии — до 10<input name="imageFiles" type="file" accept="image/jpeg,image/png,image/webp" multiple></label>
-                <div class="admin-wide"><div id="epoch-admin-preview-grid" class="epoch-admin-photo-grid"></div><p class="epoch-admin-note">Выбери сразу от 1 до 10 фото с телефона. Первое выбранное фото станет обложкой. JPEG, PNG или WebP, максимум 5 МБ каждое. При редактировании новые выбранные фото заменят текущую галерею.</p></div>
+                <div class="admin-wide"><div id="epoch-admin-preview-grid" class="epoch-admin-photo-grid"></div><p class="epoch-admin-note">Выбери сразу от 1 до 10 фото с телефона. Первое выбранное фото станет обложкой. Большие фотографии сайт автоматически уменьшит перед загрузкой. При редактировании новые выбранные фото заменят текущую галерею.</p></div>
                 <div class="epoch-admin-actions admin-wide"><button id="epoch-admin-save" type="submit">Сохранить компьютер</button><button id="epoch-admin-reset" type="button">Очистить</button><button id="epoch-admin-delete" type="button" hidden>Удалить карточку</button></div>
               </form>
             </section>
@@ -1197,6 +1197,32 @@ window.KIBER_DATA = {
     if(!arr.length && row?.image) arr.push(row.image);
     return arr.slice(0,10);
   };
+  async function prepareProductImage(file) {
+    const allowed=["image/jpeg","image/png","image/webp"];
+    if(!allowed.includes(file.type)) throw Error("Все фото должны быть JPEG, PNG или WebP.");
+    const maxBytes=Math.floor(4.5*1024*1024);
+    const maxSide=2200;
+    if(file.size<=maxBytes) return file;
+    let bitmap;
+    try { bitmap=await createImageBitmap(file,{imageOrientation:"from-image"}); }
+    catch { bitmap=await createImageBitmap(file); }
+    let width=bitmap.width, height=bitmap.height;
+    const scale=Math.min(1,maxSide/Math.max(width,height));
+    width=Math.max(1,Math.round(width*scale));
+    height=Math.max(1,Math.round(height*scale));
+    const canvas=document.createElement("canvas");
+    canvas.width=width; canvas.height=height;
+    const ctx=canvas.getContext("2d",{alpha:false});
+    ctx.drawImage(bitmap,0,0,width,height);
+    if(bitmap.close) bitmap.close();
+    const toBlob=(quality)=>new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(Error("Не удалось подготовить фото.")),"image/webp",quality));
+    let quality=.88;
+    let blob=await toBlob(quality);
+    while(blob.size>maxBytes && quality>.52){ quality-=.08; blob=await toBlob(quality); }
+    if(blob.size>maxBytes) throw Error("Фото слишком большое даже после автоматического сжатия. Попробуй другое фото.");
+    const base=(file.name||"photo").replace(/\.[^.]+$/,"").replace(/[^a-zA-Z0-9_-]+/g,"-").slice(0,40)||"photo";
+    return new File([blob],base+".webp",{type:"image/webp",lastModified:Date.now()});
+  }
   function display() {
     show("#epoch-admin-setup", !ready);
     show("#epoch-admin-auth", ready && !admin);
@@ -1306,12 +1332,13 @@ window.KIBER_DATA = {
       let images=editingImages.slice(0,10);
       if(files.length){
         images=[];
-        for(const file of files){
-          if(!["image/jpeg","image/png","image/webp"].includes(file.type)) throw Error("Все фото должны быть JPEG, PNG или WebP.");
-          if(file.size>5*1024*1024) throw Error("Каждое фото должно быть не больше 5 МБ.");
-          const ext={"image/jpeg":"jpg","image/png":"png","image/webp":"webp"}[file.type];
+        for(let i=0;i<files.length;i++){
+          notice(`Подготавливаем фото ${i+1} из ${files.length}...`);
+          const uploadFile=await prepareProductImage(files[i]);
+          const ext={"image/jpeg":"jpg","image/png":"png","image/webp":"webp"}[uploadFile.type]||"webp";
           const path="products/"+crypto.randomUUID()+"."+ext;
-          const {error}=await api.storage.from(bucket).upload(path,file,{contentType:file.type,upsert:false,cacheControl:"3600"});
+          notice(`Загружаем фото ${i+1} из ${files.length}...`);
+          const {error}=await api.storage.from(bucket).upload(path,uploadFile,{contentType:uploadFile.type,upsert:false,cacheControl:"3600"});
           if(error) throw error;
           uploaded.push(path);
           images.push(api.storage.from(bucket).getPublicUrl(path).data.publicUrl);
