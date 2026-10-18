@@ -896,7 +896,11 @@ window.KIBER_DATA = {
             <label>Имя <input name="customer" maxlength="80" autocomplete="name" required placeholder="Ваше имя"></label>
             <label>Телефон / Telegram <input name="contact" maxlength="120" required placeholder="+380... или @username"></label>
           </div>
-          <label>Комментарий <textarea name="comment" rows="2" maxlength="1000" placeholder="Есть вопросы или пожелания?"></textarea></label>
+          <div class="field-pair">
+            <label>Город (необязательно) <input name="city" autocomplete="address-level2" maxlength="100" placeholder="Например: Харьков"></label>
+            <label>Отделение Новой почты (необязательно) <input name="branch" maxlength="100" placeholder="Например: № 5"></label>
+          </div>
+          <label>Комментарий <textarea name="comment" rows="2" maxlength="350" placeholder="Есть вопросы или пожелания?"></textarea></label>
           <label class="consent"><input type="checkbox" name="consent" value="yes" required><span>Согласен(на) на использование моих контактов для ответа по заявке.</span></label>
           <button type="submit" class="btn btn-primary full">Оставить заявку на покупку ↗</button>
           <button class="text-button" type="button" data-copy-form>Скопировать заявку</button>
@@ -1232,11 +1236,81 @@ window.KIBER_DATA = {
     const host = location.hostname.toLowerCase();
     return DATA.site.formsLive || host.endsWith(".netlify.app");
   }
+  // Покупка: отправляем заявку на серверную функцию Netlify, без токена в браузере.
+  async function submitPurchase(form, status) {
+    if (!isFormReady()) {
+      status.style.color = "#ffcf99";
+      status.textContent = "Это локальный предпросмотр. Отправка доступна на опубликованном сайте.";
+      return;
+    }
+
+    // Скрытое поле задерживает часть автоматического спама.
+    if (form.elements["bot-field"].value.trim()) {
+      status.textContent = "";
+      return;
+    }
+
+    const submit = form.querySelector('button[type="submit"]');
+    if (submit.disabled) return;
+    const originalText = submit.textContent;
+    const fields = new FormData(form);
+    const selectedOptions = $$("#upgrade-summary div")
+      .map((item) => item.textContent.trim())
+      .filter(Boolean)
+      .join("; ");
+    const buyerComment = String(fields.get("comment") || "").trim();
+    const comment = [
+      selectedOptions ? "Выбранная комплектация: " + selectedOptions : "",
+      buyerComment ? "Пожелания: " + buyerComment : ""
+    ].filter(Boolean).join("\n").slice(0, 500);
+    const payload = {
+      name: String(fields.get("customer") || "").trim(),
+      phone: String(fields.get("contact") || "").trim(),
+      product: String(fields.get("product") || "").trim(),
+      price: String(fields.get("price") || "").trim(),
+      city: String(fields.get("city") || "").trim(),
+      branch: String(fields.get("branch") || "").trim(),
+      comment
+    };
+
+    submit.disabled = true;
+    submit.textContent = "Отправляем заявку…";
+    status.style.color = "#b8d6ff";
+    status.textContent = "Отправляем заявку в KIBER_EPOCH…";
+    try {
+      const response = await fetch("/.netlify/functions/send-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      if (!response.ok) throw new Error("Request failed: " + response.status);
+      const result = await response.json();
+      if (!result.success) throw new Error("Server did not confirm delivery");
+      form.reset();
+      updateOrder();
+      status.style.color = "#9ce8c4";
+      status.textContent = "Заявка успешно отправлена! Мы свяжемся с вами по указанным контактам.";
+    } catch (error) {
+      console.error("KIBER_EPOCH: ошибка отправки заявки", error);
+      status.style.color = "#ffcf99";
+      status.textContent = "Не удалось отправить заявку. Попробуйте ещё раз или напишите нам в Telegram.";
+    } finally {
+      submit.disabled = false;
+      submit.textContent = originalText;
+      status.scrollIntoView({block:"nearest", behavior:"smooth"});
+    }
+  }
+
   function initForms() {
     $$(".user-form").forEach((form) => {
       const status = $(".form-status",form);
       $("[data-copy-form]",form).addEventListener("click",() => copyForm(form,status));
       form.addEventListener("submit",(e) => {
+        if (form.name === "purchase") {
+          e.preventDefault();
+          void submitPurchase(form, status);
+          return;
+        }
         const files = $$('input[type="file"]',form).flatMap(x => Array.from(x.files || []));
         const bytes = files.reduce((sum,f) => sum + f.size,0);
         if (bytes > 7.5 * 1024 * 1024) {
